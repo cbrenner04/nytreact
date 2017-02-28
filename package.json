@@ -17,6 +17,7 @@
     "url": "https://github.com/cbrenner04/news/issues"
   },
   "dependencies": {
+    "body-parser": "^1.16.1",
     "express": "^4.14.1",
     "mongoose": "^4.8.5",
     "react": "^0.14.3",
