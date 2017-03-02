@@ -27,7 +27,8 @@ app.use(bodyParser.urlencoded({
     extended: false
 }));
 
-mongoose.connect('mongodb://localhost/nytreact');
+mongoose.connect('mongodb://heroku_rlw4lz7w:hvl0tepohsfs3r7s82839l3ls' +
+                 '@ds113670.mlab.com:13670/heroku_rlw4lz7w');
 var db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'connection error:'));
