@@ -2,6 +2,7 @@ var React = require('react');
 var Search = require('./search');
 var Top = require('./top');
 var Saved = require('./saved');
+var axios = require('axios');
 
 var queryURLBase = "https://api.nytimes.com/svc/search/v2/articlesearch.json" +
                    "?api-key=64b9a5424efb4009a8774200660a48d9&q=";
@@ -13,8 +14,15 @@ var Main = React.createClass({
             numberArticles: 5,
             startYear: '',
             endYear: '',
-            topArticles: []
+            topArticles: [],
+            savedArticles: []
         }
+    },
+
+    componentDidMount: function() {
+      axios.get('/api/articles/').then(function(response) {
+        this.setState({ savedArticles: response.data });
+      }.bind(this));
     },
 
     handleUserInput: function(obj) {
@@ -31,7 +39,7 @@ var Main = React.createClass({
           queryURL = queryURL + "&end_date=" + this.state.endYear + "0101";
       }
 
-      $.get(queryURL, function(NYTData) {
+      axios.get(queryURL, function(NYTData) {
           this.addArticles(NYTData, this.state.numberArticles);
       }.bind(this));
     },
@@ -40,6 +48,7 @@ var Main = React.createClass({
       var articles = [];
       for (var i = 0; i < numberOfArticles; i++) {
           var localObject = {};
+          localObject.id = i;
           localObject.title = NYTData.response.docs[i].headline.main;
           localObject.link = NYTData.response.docs[i].web_url;
           localObject.date = NYTData.response.docs[i].pub_date;
@@ -66,7 +75,7 @@ var Main = React.createClass({
                         onUserInput={ function(object) { this.handleUserInput(object) }.bind(this) }
                         onFormSubmit={ function() { this.handleFormSubmit() }.bind(this) } />
                 <Top topArticles={ this.state.topArticles } />
-                <Saved />
+                <Saved savedArticles={ this.state.savedArticles } />
             </div>
         )
     }

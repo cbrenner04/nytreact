@@ -1,4 +1,5 @@
 var React = require('react');
+var TopArticle = require('./top-article');
 
 var Top = React.createClass({
     render: function() {
@@ -7,7 +8,11 @@ var Top = React.createClass({
                 <div className="panel-heading">
                     <h3 className="panel-title"><strong><i className="fa fa-table"></i>   Top Articles</strong></h3>
                 </div>
-                <div className="panel-body" id="topSection"></div>
+                <div className="panel-body" id="topSection">
+                    { this.props.topArticles.map(function(article) {
+                        return <TopArticle article={ article } key={ article.id } />
+                    }) }
+                </div>
             </div>
         )
     }
