@@ -1,31 +1,39 @@
 var React = require('react');
 
 var Search = React.createClass({
-    getInitialState: function() {
-        return {
-            numberArticles: 5
-        }
+    handleChange: function(event) {
+        var name = event.target.name;
+        var obj = {};
+        obj[name] = event.target.value;
+        this.props.onUserInput(obj);
     },
-    changeValue: function(event) {
-        this.setState({
-            numberArticles: event.value
-        })
+    handleSubmit: function(event) {
+        event.preventDefault();
+        this.props.onFormSubmit();
     },
     render: function() {
         return (
             <div className="panel panel-primary">
                 <div className="panel-heading">
-                    <h3 className="panel-title"><strong><i className="fa fa-list-alt"></i>   Search Parameters</strong></h3>
+                    <h3 className="panel-title">
+                        <strong><i className="fa fa-list-alt"></i>   Search Parameters</strong>
+                    </h3>
                 </div>
                 <div className="panel-body">
-                    <form role="form" className="form">
+                    <form role="form" className="form"
+                          onSubmit={ function(event) { this.handleSubmit(event) }.bind(this) }>
                         <div className="form-group">
                             <label htmlFor="searchTerm">Search Term:</label>
-                            <input type="text" className="form-control" id="searchTerm" />
+                            <input type="text" className="form-control"
+                                   id="searchTerm" name="searchTerm"
+                                   onChange={ function(event) { this.handleChange(event) }.bind(this) } />
                         </div>
                         <div className="form-group">
                             <label htmlFor="numRecordsSelect">Number of Records to Retrieve:</label>
-                            <select className="form-control" id="numRecordsSelect" onChange={ this.changeValue } value={ this.state.numberArticles }>
+                            <select className="form-control" id="numRecordsSelect"
+                                    name='numberArticles'
+                                    onChange={ function(event) { this.handleChange(event) }.bind(this) }
+                                    value={ this.props.numberArticles }>
                                 <option value="1">1</option>
                                 <option value="5">5</option>
                                 <option value="10">10</option>
@@ -33,11 +41,17 @@ var Search = React.createClass({
                         </div>
                         <div className="form-group">
                             <label htmlFor="startYear">Start Year (Optional):</label>
-                            <input type="text" className="form-control" id="startYear" />
+                            <input type="text" className="form-control" id="startYear"
+                                    name='startYear'
+                                    onChange={ function(event) { this.handleChange(event) }.bind(this) }
+                                    value={ this.props.startYear } />
                         </div>
                         <div className="form-group">
                             <label htmlFor="endYear">End Year (Optional):</label>
-                            <input type="text" className="form-control" id="endYear" />
+                            <input type="text" className="form-control" id="endYear"
+                                    name='endYear'
+                                    onChange={ function(event) { this.handleChange(event) }.bind(this) }
+                                    value={ this.props.endYear } />
                         </div>
                         <button type="submit" className="btn btn-default" id="runSearch"><i className="fa fa-search"></i> Search</button>
                         <button type="button" className="btn btn-default" id="clearAll"><i className="fa fa-trash"></i> Clear Results</button>
