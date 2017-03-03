@@ -39,30 +39,30 @@ var Main = React.createClass({
           queryURL = queryURL + "&end_date=" + this.state.endYear + "0101";
       }
 
-      axios.get(queryURL, function(NYTData) {
+      axios.get(queryURL).then(function(NYTData) {
           this.addArticles(NYTData, this.state.numberArticles);
       }.bind(this));
     },
 
     addArticles: function(NYTData, numberOfArticles) {
-      var articles = [];
-      for (var i = 0; i < numberOfArticles; i++) {
-          var localObject = {};
-          localObject.id = i;
-          localObject.title = NYTData.response.docs[i].headline.main;
-          localObject.link = NYTData.response.docs[i].web_url;
-          localObject.date = NYTData.response.docs[i].pub_date;
-          localObject.sectionName = NYTData.response.docs[i].section_name;
+        var articles = [];
+        for (var i = 0; i < numberOfArticles; i++) {
+            var article = NYTData.data.response.docs[i];
+            var localObject = {};
+            localObject.id = i;
+            localObject.title = article.headline.main;
+            localObject.link = article.web_url;
+            localObject.date = article.pub_date;
+            localObject.sectionName = article.section_name;
 
-          if(NYTData.response.docs[i].byline &&
-              NYTData.response.docs[i].byline.hasOwnProperty("original")) {
-              localObject.originalByline = NYTData.response.docs[i].byline.original;
-          }
-          articles.push(localObject)
-      }
-      this.setState({
-          topArticles: articles
-      });
+            if(article.byline && article.byline.hasOwnProperty("original")) {
+                localObject.originalByline = article.byline.original;
+            }
+            articles.push(localObject)
+        }
+        this.setState({
+            topArticles: articles
+        });
     },
 
     render: function() {
