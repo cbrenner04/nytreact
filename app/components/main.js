@@ -72,8 +72,12 @@ var Main = React.createClass({
                         numberArticles={ this.state.numberArticles }
                         startYear={ this.state.startYear }
                         endYear={ this.state.endYear }
-                        onUserInput={ function(object) { this.handleUserInput(object) }.bind(this) }
-                        onFormSubmit={ function() { this.handleFormSubmit() }.bind(this) } />
+                        onUserInput={ function(object) {
+                            this.handleUserInput(object)
+                        }.bind(this) }
+                        onFormSubmit={ function() {
+                            this.handleFormSubmit()
+                        }.bind(this) } />
                 <Top topArticles={ this.state.topArticles } />
                 <Saved savedArticles={ this.state.savedArticles } />
             </div>
