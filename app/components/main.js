@@ -29,6 +29,10 @@ var Main = React.createClass({
         this.setState(obj);
     },
 
+    handleClear: function() {
+        this.setState({ topArticles: [] });
+    },
+
     handleFormSubmit: function() {
       var queryURL = queryURLBase + this.state.searchTerm;
       if (parseInt(this.state.startYear)) {
@@ -77,6 +81,9 @@ var Main = React.createClass({
                         }.bind(this) }
                         onFormSubmit={ function() {
                             this.handleFormSubmit()
+                        }.bind(this) }
+                        onClear={ function() {
+                            this.handleClear()
                         }.bind(this) } />
                 <Top topArticles={ this.state.topArticles } />
                 <Saved savedArticles={ this.state.savedArticles } />

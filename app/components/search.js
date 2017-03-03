@@ -11,6 +11,9 @@ var Search = React.createClass({
         event.preventDefault();
         this.props.onFormSubmit();
     },
+    handleClear: function(event) {
+        this.props.onClear();
+    },
     render: function() {
         return (
             <div className="panel panel-primary">
@@ -70,7 +73,10 @@ var Search = React.createClass({
                             <i className="fa fa-search"></i> Search
                         </button>
                         <button type="button" className="btn btn-default"
-                                id="clearAll">
+                                id="clearAll"
+                                onClick={ function(event) {
+                                    this.handleClear(event)
+                                }.bind(this) }>
                             <i className="fa fa-trash"></i> Clear Results
                         </button>
                     </form>
