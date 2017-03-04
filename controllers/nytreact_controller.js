@@ -27,18 +27,18 @@ module.exports = function(app) {
 
     app.post('/api/articles', function(request, response) {
         var article = request.body;
-        Article.create(article, function(error, _article) {
+        Article.create(article, function(error, article) {
             if (error) {
                 response.send(error);
             } else {
-                response.redirect('/');
+                response.send(article);
             }
         });
     })
 
     app.post('/api/articles/:id/comments', function(request, response) {
         var articleId = request.params.id;
-        var comment = request.body;
+        var comment = request.body.body;
         Article.findOne({
             _id: articleId
         }, function(_error, article) {
@@ -51,16 +51,15 @@ module.exports = function(app) {
                     if (error) {
                         response.send(error);
                     } else {
-                        response.redirect('/');
+                        response.send(comment);
                     }
                 });
             });
         });
     });
 
-    app.delete('/api/articles/', function(request, response) {
-        var articleId = request.body.id;
-        console.log(articleId);
+    app.delete('/api/articles/:id', function(request, response) {
+        var articleId = request.params.id;
         Article.remove({ _id: articleId }, function(error, _article) {
             if (error) {
                 response.send(error);
@@ -70,9 +69,9 @@ module.exports = function(app) {
         });
     });
 
-    app.delete('/api/articles/:id/comments/', function(request, response) {
-        var articleId = request.params.id;
-        var commentId = request.body.id;
+    app.delete('/api/articles/:article_id/comments/:id', function(request, response) {
+        var articleId = request.params.article_id;
+        var commentId = request.params.id;
         Comment.remove({ _id: commentId }, function(error, _comment) {
             if (error) {
                 response.send(error);

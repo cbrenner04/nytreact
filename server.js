@@ -1,6 +1,6 @@
 var bodyParser = require('body-parser');
 var express = require('express');
-// var methodOverride = require('method-override');
+var methodOverride = require('method-override');
 var mongoose = require('mongoose');
 mongoose.Promise = Promise;
 
@@ -12,7 +12,7 @@ var port = process.env.PORT || 3000;
 app.use(express.static(__dirname + '/public'));
 
 // // Override with POST having ?_method=DELETE
-// app.use(methodOverride('_method'));
+app.use(methodOverride('_method'));
 
 app.use(bodyParser.json());
 // Parse application/x-www-form-urlencoded

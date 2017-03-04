@@ -15,7 +15,8 @@ var Main = React.createClass({
             startYear: '',
             endYear: '',
             topArticles: [],
-            savedArticles: []
+            savedArticles: [],
+            newComment: ''
         }
     },
 
@@ -25,8 +26,12 @@ var Main = React.createClass({
       }.bind(this));
     },
 
-    handleUserInput: function(obj) {
-        this.setState(obj);
+    handleUserInput: function(object) {
+        this.setState(object);
+    },
+
+    handleCommentInput: function(object) {
+        this.setState(object);
     },
 
     handleClear: function() {
@@ -46,6 +51,35 @@ var Main = React.createClass({
       axios.get(queryURL).then(function(NYTData) {
           this.addArticles(NYTData, this.state.numberArticles);
       }.bind(this));
+    },
+
+    handleArticleSave: function(article) {
+        var savedArticles = this.state.savedArticles;
+        var newArticle = {
+            title: article.title,
+            link: article.link,
+            pub_date: article.date,
+            section_name: article.sectionName,
+            original_byline: article.originalByline
+        }
+        axios.post('/api/articles', newArticle)
+            .then(function (response) {
+                savedArticles.push(response.data);
+                this.setState({
+                    savedArticles: savedArticles
+                })
+            }.bind(this));
+    },
+
+    handleCommentSubmit: function(articleId) {
+        axios.post('/api/articles/' + articleId + '/comments',
+            { body: this.state.newComment })
+            .then(function(response) {
+                var newComment = response.data;
+                this.setState({
+                    newComment: newComment
+                })
+            }.bind(this));
     },
 
     addArticles: function(NYTData, numberOfArticles) {
@@ -85,8 +119,18 @@ var Main = React.createClass({
                         onClear={ function() {
                             this.handleClear()
                         }.bind(this) } />
-                <Top topArticles={ this.state.topArticles } />
-                <Saved savedArticles={ this.state.savedArticles } />
+                <Top topArticles={ this.state.topArticles }
+                     onArticleSave={ function(article) {
+                         this.handleArticleSave(article)
+                     }.bind(this) } />
+                <Saved savedArticles={ this.state.savedArticles }
+                       newComment={ this.state.newComment }
+                       onCommentInput={ function(object) {
+                           this.handleCommentInput(object)
+                       }.bind(this) }
+                       onCommentSubmit={ function(articleId) {
+                           this.handleCommentSubmit(articleId)
+                       }.bind(this) } />
             </div>
         )
     }

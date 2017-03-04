@@ -1,5 +1,9 @@
 var React = require('react');
 var TopArticle = React.createClass({
+    handleSave: function(event, article) {
+        event.preventDefault();
+        this.props.onNewArticleSave(article);
+    },
     render: function() {
         return(
             <div className='well' id={ 'articleWell-' + this.props.article.id }>
@@ -18,15 +22,11 @@ var TopArticle = React.createClass({
                         <br />
                         <button type='submit' form={ 'hidden-form-' + this.props.article.id }
                                 className='btn btn-primary pull-right'>Save</button>
-                        <form action='/api/articles' method='POST'
-                              id={ 'hidden-form-' + this.props.article.id }
-                              className='hidden-xs-up'>
-                            <input type='hidden' name='title'
-                                   value={ this.props.article.title }></input>
-                            <input type='hidden' name='link'
-                                   value={ this.props.article.link }></input>
-                            <input type='hidden' name='origin'
-                                   value={ this.props.article.date }></input>
+                        <form id={ 'hidden-form-' + this.props.article.id }
+                              className='hidden-xs-up'
+                              onSubmit={ function(event) {
+                                  this.handleSave(event, this.props.article)
+                              }.bind(this) }>
                         </form>
                     </div>
                 </div>

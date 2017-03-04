@@ -12,6 +12,9 @@ var articleSchema = new Schema({
         type: String,
         required: [true, 'The link to the article is required.']
     },
+    pub_date: Date,
+    section_name: String,
+    original_byline: String,
     timestamp: {
         type: Date,
         default: Date.now

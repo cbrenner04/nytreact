@@ -12,8 +12,12 @@ var Top = React.createClass({
                 </div>
                 <div className="panel-body" id="topSection">
                     { this.props.topArticles.map(function(article) {
-                        return <TopArticle article={ article } key={ article.id } />
-                    }) }
+                        return <TopArticle article={ article }
+                                           key={ article.id }
+                                           onNewArticleSave={ function(article) {
+                                               this.props.onArticleSave(article);
+                                           }.bind(this) } />
+                    }.bind(this)) }
                 </div>
             </div>
         )
