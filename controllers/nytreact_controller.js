@@ -17,10 +17,12 @@ module.exports = function(app) {
         Article.findOne({ _id: articleId })
             .populate('comments')
             .exec(function(error, article) {
-                if (error) {
-                    response.send(error);
-                } else {
-                    response.json(article.comments);
+                if (article) {
+                    if (error) {
+                        response.send(error);
+                    } else {
+                        response.json(article.comments);
+                    }
                 }
             });
     });
@@ -60,11 +62,11 @@ module.exports = function(app) {
 
     app.delete('/api/articles/:id', function(request, response) {
         var articleId = request.params.id;
-        Article.remove({ _id: articleId }, function(error, _article) {
+        Article.remove({ _id: articleId }, function(error, article) {
             if (error) {
                 response.send(error);
             } else {
-                response.redirect('/');
+                response.send(article)
             }
         });
     });
@@ -72,11 +74,11 @@ module.exports = function(app) {
     app.delete('/api/articles/:article_id/comments/:id', function(request, response) {
         var articleId = request.params.article_id;
         var commentId = request.params.id;
-        Comment.remove({ _id: commentId }, function(error, _comment) {
+        Comment.remove({ _id: commentId }, function(error, comment) {
             if (error) {
                 response.send(error);
             } else {
-                response.redirect('/');
+                response.send(comment)
             }
         });
     });

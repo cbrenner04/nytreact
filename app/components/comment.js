@@ -1,5 +1,8 @@
 var React = require('react');
 var Comment = React.createClass({
+  handleDelete: function(articleId, commentId) {
+      this.props.onCommentDelete(articleId, commentId);
+  },
   render: function() {
     return (
       <li className="list-group-item">
@@ -10,17 +13,12 @@ var Comment = React.createClass({
                   </p>
               </div>
               <div className="col-sm-3">
-                  <button type="submit"
-                          form={ "hidden-form-" + this.props.comment._id }
+                  <button onClick={ function(event) {
+                              this.handleDelete(this.props.article._id, this.props.comment._id)
+                          }.bind(this) }
                           className="btn btn-secondary btn-sm pull-right">
                       Delete
                   </button>
-                  <form method="POST"
-                        action={ "/api/articles/" + this.props.article._id +
-                                 "/comments/" + this.props.comment._id +
-                                 "?_method=DELETE" }
-                        id={ "hidden-form-" + this.props.comment._id }
-                        className="hidden-xs-up"></form>
               </div>
           </div>
       </li>

@@ -21,9 +21,13 @@ var Main = React.createClass({
     },
 
     componentDidMount: function() {
-      axios.get('/api/articles/').then(function(response) {
-        this.setState({ savedArticles: response.data });
-      }.bind(this));
+        this.fetchSavedArticles()
+    },
+
+    fetchSavedArticles: function() {
+        axios.get('/api/articles/').then(function(response) {
+            this.setState({ savedArticles: response.data });
+        }.bind(this));
     },
 
     handleUserInput: function(object) {
@@ -81,6 +85,23 @@ var Main = React.createClass({
             }.bind(this));
     },
 
+    handleArticleDelete: function(articleId) {
+        axios.delete('/api/articles/' + articleId, {}).then(function(article) {
+            console.log(article)
+        });
+    },
+
+    componentDidUpdate: function() {
+        this.fetchSavedArticles()
+    },
+
+    handleCommentDelete: function(articleId, commentId) {
+        axios.delete('/api/articles/' + articleId + '/comments/' + commentId, {})
+            .then(function(comment) {
+                console.log(comment)
+            });;
+    },
+
     addArticles: function(NYTData, numberOfArticles) {
         var articles = [];
         for (var i = 0; i < numberOfArticles; i++) {
@@ -128,11 +149,17 @@ var Main = React.createClass({
                      }.bind(this) } />
                 <Saved savedArticles={ this.state.savedArticles }
                        newComment={ this.state.newComment }
+                       onArticleDelete={ function(articleId) {
+                           this.handleArticleDelete(articleId)
+                       }.bind(this) }
                        onCommentInput={ function(object) {
                            this.handleCommentInput(object)
                        }.bind(this) }
                        onCommentSubmit={ function(articleId) {
                            this.handleCommentSubmit(articleId)
+                       }.bind(this) }
+                       onCommentDelete={ function(articleId, commentId) {
+                           this.handleCommentDelete(articleId, commentId)
                        }.bind(this) } />
             </div>
         )

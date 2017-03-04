@@ -17,6 +17,12 @@ var SavedArticle = React.createClass({
         event.preventDefault();
         this.props.onNewCommentSubmit(articleId);
     },
+    handleDelete: function(articleId) {
+        this.props.onNewArticleDelete(articleId);
+    },
+    handleOldCommentDelete: function(articleId, commentId) {
+        this.props.onNewCommentDelete(articleId, commentId);
+    },
     componentDidMount: function() {
       this.fetchComments();
     },
@@ -51,16 +57,12 @@ var SavedArticle = React.createClass({
                             <a href={ this.props.article.link }></a>
                         </div>
                         <div className="col-sm-3">
-                            <button type="submit"
-                                    form={ "hidden-form-" + this.props.article._id }
-                                    className="btn btn-secondary btn-sm pull-right">
-                                Delete
-                            </button>
-                            <form method="POST"
-                                  action={ "/api/articles/" + this.props.article._id +
-                                           "?_method=DELETE" }
-                                  id={ "hidden-form-" + this.props.article._id }
-                                  className="hidden-xs-up"></form>
+                          <button onClick={ function(event) {
+                                      this.handleDelete(this.props.article._id)
+                                  }.bind(this) }
+                                  className="btn btn-secondary btn-sm pull-right">
+                              Delete
+                          </button>
                         </div>
                     </h4>
                 </div>
@@ -84,7 +86,11 @@ var SavedArticle = React.createClass({
                             </div>
                         </form>
                         <hr />
-                        <Comments article={ this.props.article } comments={ this.state.comments } />
+                        <Comments article={ this.props.article }
+                                  comments={ this.state.comments }
+                                  onOldCommentDelete={ function(articleId, commentId) {
+                                      this.handleOldCommentDelete(articleId, commentId)
+                                  }.bind(this) } />
                     </div>
                 </div>
             </div>
