@@ -1,40 +1,49 @@
 var React = require('react');
 var Comments = require('./comments');
 var axios = require('axios');
+
 var SavedArticle = React.createClass({
     getInitialState: function() {
-      return {
-        comments: []
-      }
+        return {
+            comments: []
+        }
     },
+
     handleCommentChange: function(event) {
         var name = event.target.name;
         var obj = {};
         obj[name] = event.target.value;
         this.props.onNewCommentInput(obj);
     },
+
     handleCommentSubmit: function(event, articleId) {
         event.preventDefault();
         this.props.onNewCommentSubmit(articleId);
     },
+
     handleDelete: function(articleId) {
         this.props.onNewArticleDelete(articleId);
     },
+
     handleOldCommentDelete: function(articleId, commentId) {
         this.props.onNewCommentDelete(articleId, commentId);
     },
+
     componentDidMount: function() {
       this.fetchComments();
     },
+
     componentDidUpdate: function() {
       this.fetchComments();
     },
+
     fetchComments: function() {
         axios.get('/api/articles/' + this.props.article._id + '/comments')
             .then(function(response) {
                 this.setState({ comments: response.data });
             }.bind(this));
     },
+
     render: function() {
         return (
             <div className="panel panel-default">

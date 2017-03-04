@@ -7,13 +7,16 @@ var Search = React.createClass({
         obj[name] = event.target.value;
         this.props.onUserInput(obj);
     },
+
     handleSubmit: function(event) {
         event.preventDefault();
         this.props.onFormSubmit();
     },
+
     handleClear: function(event) {
         this.props.onClear();
     },
+
     render: function() {
         return (
             <div className="panel panel-primary">

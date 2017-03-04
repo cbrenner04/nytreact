@@ -43,18 +43,18 @@ var Main = React.createClass({
     },
 
     handleFormSubmit: function() {
-      var queryURL = queryURLBase + this.state.searchTerm;
-      if (parseInt(this.state.startYear)) {
-          queryURL = queryURL + "&begin_date=" + this.state.startYear + "0101";
-      }
+        var queryURL = queryURLBase + this.state.searchTerm;
+        if (parseInt(this.state.startYear)) {
+            queryURL = queryURL + "&begin_date=" + this.state.startYear + "0101";
+        }
 
-      if (parseInt(this.state.endYear)) {
-          queryURL = queryURL + "&end_date=" + this.state.endYear + "0101";
-      }
+        if (parseInt(this.state.endYear)) {
+            queryURL = queryURL + "&end_date=" + this.state.endYear + "0101";
+        }
 
-      axios.get(queryURL).then(function(NYTData) {
-          this.addArticles(NYTData, this.state.numberArticles);
-      }.bind(this));
+        axios.get(queryURL).then(function(NYTData) {
+            this.addArticles(NYTData, this.state.numberArticles);
+        }.bind(this));
     },
 
     handleArticleSave: function(article) {

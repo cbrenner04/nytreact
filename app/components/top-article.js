@@ -1,9 +1,11 @@
 var React = require('react');
+
 var TopArticle = React.createClass({
     handleSave: function(event, article) {
         event.preventDefault();
         this.props.onNewArticleSave(article);
     },
+
     render: function() {
         return(
             <div className='well' id={ 'articleWell-' + this.props.article.id }>
