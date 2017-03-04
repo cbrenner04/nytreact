@@ -33,6 +33,7 @@ var Search = React.createClass({
                             <label htmlFor="searchTerm">Search Term:</label>
                             <input type="text" className="form-control"
                                    id="searchTerm" name="searchTerm"
+                                   value={ this.props.searchTerm }
                                    onChange={ function(event) {
                                        this.handleChange(event)
                                    }.bind(this) } />

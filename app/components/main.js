@@ -75,9 +75,8 @@ var Main = React.createClass({
         axios.post('/api/articles/' + articleId + '/comments',
             { body: this.state.newComment })
             .then(function(response) {
-                var newComment = response.data;
                 this.setState({
-                    newComment: newComment
+                    newComment: ''
                 })
             }.bind(this));
     },
@@ -99,7 +98,11 @@ var Main = React.createClass({
             articles.push(localObject)
         }
         this.setState({
-            topArticles: articles
+            topArticles: articles,
+            searchTerm: '',
+            numberArticles: 5,
+            startYear: '',
+            endYear: '',
         });
     },
 

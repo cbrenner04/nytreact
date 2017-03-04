@@ -16,17 +16,18 @@ var SavedArticle = React.createClass({
     handleCommentSubmit: function(event, articleId) {
         event.preventDefault();
         this.props.onNewCommentSubmit(articleId);
-        console.log(this.state.comments)
-        console.log(this.props.newComment)
-        var comments = this.state.comments.push(this.props.newComment);
-        console.log(comments);
-        this.setState({ comments: comments });
     },
     componentDidMount: function() {
-      axios.get('/api/articles/' + this.props.article._id + '/comments')
-          .then(function(response) {
-              this.setState({ comments: response.data });
-          }.bind(this));
+      this.fetchComments();
+    },
+    componentDidUpdate: function() {
+      this.fetchComments();
+    },
+    fetchComments: function() {
+        axios.get('/api/articles/' + this.props.article._id + '/comments')
+            .then(function(response) {
+                this.setState({ comments: response.data });
+            }.bind(this));
     },
     render: function() {
         return (
